@@ -12,6 +12,8 @@
   <depend>rclcpp</depend>
   <!-- 标准消息类型 -->
   <depend>std_msgs</depend>
+  <!-- 参数接口 -->
+  <depend>rcl_interfaces</depend>
 
   <test_depend>ament_lint_auto</test_depend>
   <test_depend>ament_lint_common</test_depend>
