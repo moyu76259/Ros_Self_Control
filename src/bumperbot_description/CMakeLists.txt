@@ -8,8 +8,10 @@ endif()
 
 find_package(ament_cmake REQUIRED)
 
+#安装模型及配置文件
+#launch启动节点，rviz加载显示配置
 install(
-  DIRECTORY meshes urdf
+  DIRECTORY meshes urdf launch rviz
   DESTINATION share/${PROJECT_NAME}
 )
 
