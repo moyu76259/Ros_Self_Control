@@ -1,0 +1,68 @@
+<?xml version="1.0"?>
+
+<robot name="bumperbot" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+    <!-- 右驱动轮 -->
+    <gazebo reference="wheel_right_link">
+        <!-- 摩擦系数 -->
+        <mu1>1000000000000000.0</mu1>
+        <mu2>1000000000000000.0</mu2>
+        <!-- 接触刚度与阻尼 -->
+        <kp>1000000000000.0</kp>
+        <kd>10.0</kd>
+        <!-- 接触深度与修正速度 -->
+        <minDepth>0.001</minDepth>
+        <maxVel>0.1</maxVel>
+        <!-- 摩擦方向 -->
+        <fdir1>1 0 0</fdir1>
+    </gazebo>
+
+    <!-- 左驱动轮 -->
+    <gazebo reference="wheel_left_link">
+        <!-- 摩擦系数 -->
+        <mu1>1000000000000000.0</mu1>
+        <mu2>1000000000000000.0</mu2>
+        <!-- 接触刚度与阻尼 -->
+        <kp>1000000000000.0</kp>
+        <kd>10.0</kd>
+        <!-- 接触深度与修正速度 -->
+        <minDepth>0.001</minDepth>
+        <maxVel>0.1</maxVel>
+        <!-- 摩擦方向 -->
+        <fdir1>1 0 0</fdir1>
+    </gazebo>
+
+    <!-- 前支撑轮 -->
+    <gazebo reference="caster_front_link">
+        <!-- 摩擦系数 -->
+        <mu1>0.1</mu1>
+        <mu2>0.1</mu2>
+        <!-- 接触刚度与阻尼 -->
+        <kp>1000000.0</kp>
+        <kd>100.0</kd>
+        <!-- 接触深度与修正速度 -->
+        <minDepth>0.001</minDepth>
+        <maxVel>0.1</maxVel>
+    </gazebo>
+
+    <!-- 后支撑轮 -->
+    <gazebo reference="caster_rear_link">
+        <!-- 摩擦系数 -->
+        <mu1>0.1</mu1>
+        <mu2>0.1</mu2>
+        <!-- 接触刚度与阻尼 -->
+        <kp>1000000.0</kp>
+        <kd>100.0</kd>
+        <!-- 接触深度与修正速度 -->
+        <minDepth>0.001</minDepth>
+        <maxVel>0.1</maxVel>
+    </gazebo>
+
+    <!-- Gazebo控制插件 -->
+    <gazebo>
+        <plugin filename="gz_ros2_control-system" name="gz_ros2_control::GazeboSimROS2ControlPlugin">
+            <!-- 控制器参数 -->
+            <parameters></parameters>
+        </plugin>
+    </gazebo>
+</robot>

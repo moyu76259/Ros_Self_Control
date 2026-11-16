@@ -2,35 +2,77 @@
 
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="bumperbot">
 
-    <!-- Base frame -->
+   
+
+    <!-- Gazebo仿真参数 -->
+    <xacro:include filename="$(find bumperbot_description)/urdf/bumperbot_gazebo.xacro"/>
+
+    <!-- ROS2控制配置 -->
+    <xacro:include filename="$(find bumperbot_description)/urdf/bumperbot_ros2_control.xacro"/>
+
+    <!-- 基础坐标系 -->
     <link name="base_footprint"/>
 
-    <!-- Chassis -->
+    <!-- 底盘 -->
     <link name="base_link">
+        <!-- 惯性 -->
+        <inertial>
+            <origin xyz="0 0 0.04" rpy="0.0 0.25 0.3"/>
+            <mass value="8.2573504e-01"/>
+            <inertia ixx="2.2124416e-02" ixy="-1.2294101e-04" ixz="3.4938785e-04"
+                     iyy="2.1193702e-02" iyz="-5.0120904e-05"
+                     izz="2.0064271e-02"/>
+        </inertial>
+        <!-- 外观 -->
         <visual>
             <origin rpy="0 0 0" xyz="0 0 0"/>
             <geometry>
                 <mesh filename="package://bumperbot_description/meshes/base_link.STL"/>
             </geometry>
         </visual>
+        <!-- 碰撞 -->
+        <collision>
+            <origin rpy="0 0 0" xyz="0 0 0"/>
+            <geometry>
+                <mesh filename="package://bumperbot_description/meshes/base_link.STL"/>
+            </geometry>
+        </collision>
     </link>
 
+    <!-- 底盘固定关节 -->
     <joint name="base_joint" type="fixed">
         <parent link="base_footprint"/>
         <child link="base_link"/>
         <origin rpy="0 0 0" xyz="0 0 0.033"/>
     </joint>
 
-    <!-- Right wheel -->
+    <!-- 右驱动轮 -->
     <link name="wheel_right_link">
+        <!-- 惯性 -->
+        <inertial>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <mass value="1.0"/>
+            <inertia ixx="0.001" ixy="0" ixz="0"
+                     iyy="0.001" iyz="0"
+                     izz="0.001"/>
+        </inertial>
+        <!-- 外观 -->
         <visual>
             <origin rpy="1.57 0 0" xyz="0 0 0"/>
             <geometry>
                 <mesh filename="package://bumperbot_description/meshes/wheel_right_link.STL"/>
             </geometry>
         </visual>
+        <!-- 球形碰撞体 -->
+        <collision>
+            <origin xyz="0 -0.015 0" rpy="1.57 0 0"/>
+            <geometry>
+                <sphere radius="0.033"/>
+            </geometry>
+        </collision>
     </link>
 
+    <!-- 右轮旋转关节 -->
     <joint name="wheel_right_joint" type="continuous">
         <parent link="base_link"/>
         <child link="wheel_right_link"/>
@@ -38,16 +80,33 @@
         <origin rpy="0 0 0" xyz="0 -0.07 0"/>
     </joint>
 
-    <!-- Left wheel -->
+    <!-- 左驱动轮 -->
     <link name="wheel_left_link">
+        <!-- 惯性 -->
+        <inertial>
+            <origin xyz="0 0 0.04" rpy="0.0 0.25 0.3"/>
+            <mass value="8.2573504e-01"/>
+            <inertia ixx="2.2124416e-02" ixy="-1.2294101e-04" ixz="3.4938785e-04"
+                     iyy="2.1193702e-02" iyz="-5.0120904e-05"
+                     izz="2.0064271e-02"/>
+        </inertial>
+        <!-- 外观 -->
         <visual>
             <origin rpy="-1.57 0 0" xyz="0 0 0"/>
             <geometry>
                 <mesh filename="package://bumperbot_description/meshes/wheel_left_link.STL"/>
             </geometry>
         </visual>
+        <!-- 球形碰撞体 -->
+        <collision>
+            <origin xyz="0 0.015 0" rpy="1.57 0 0"/>
+            <geometry>
+                <sphere radius="0.033"/>
+            </geometry>
+        </collision>
     </link>
 
+    <!-- 左轮旋转关节 -->
     <joint name="wheel_left_joint" type="continuous">
         <parent link="base_link"/>
         <child link="wheel_left_link"/>
@@ -55,38 +114,70 @@
         <origin rpy="0 0 0" xyz="0 0.07 0"/>
     </joint>
 
+    <!-- 前支撑轮 -->
+    <link name="caster_front_link">
+        <!-- 惯性 -->
+        <inertial>
+            <origin xyz="0 0 0.04" rpy="0.0 0.25 0.3"/>
+            <mass value="8.2573504e-01"/>
+            <inertia ixx="2.2124416e-02" ixy="-1.2294101e-04" ixz="3.4938785e-04"
+                     iyy="2.1193702e-02" iyz="-5.0120904e-05"
+                     izz="2.0064271e-02"/>
+        </inertial>
+        <!-- 外观 -->
+        <visual>
+            <origin rpy="0 0 0" xyz="0 0 0"/>
+            <geometry>
+                <mesh filename="package://bumperbot_description/meshes/caster_front_link.STL"/>
+            </geometry>
+        </visual>
+        <!-- 球形碰撞体 -->
+        <collision>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry>
+                <sphere radius="0.005"/>
+            </geometry>
+        </collision>
+    </link>
 
-<!-- Front caster -->
-<link name="caster_front_link">
-    <visual>
-        <origin rpy="0 0 0" xyz="0 0 0"/>
-        <geometry>
-            <mesh filename="package://bumperbot_description/meshes/caster_front_link.STL"/>
-        </geometry>
-    </visual>
-</link>
+    <!-- 前支撑轮固定关节 -->
+    <joint name="caster_front_joint" type="fixed">
+        <parent link="base_link"/>
+        <child link="caster_front_link"/>
+        <origin rpy="0 0 0" xyz="0.04755 0 -0.0275"/>
+    </joint>
 
-<joint name="caster_front_joint" type="fixed">
-    <parent link="base_link"/>
-    <child link="caster_front_link"/>
-    <origin rpy="0 0 0" xyz="0.04755 0 -0.0275"/>
-</joint>
+    <!-- 后支撑轮 -->
+    <link name="caster_rear_link">
+        <!-- 惯性 -->
+        <inertial>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <mass value="1.0"/>
+            <inertia ixx="0.001" ixy="0" ixz="0"
+                     iyy="0.001" iyz="0"
+                     izz="0.001"/>
+        </inertial>
+        <!-- 外观 -->
+        <visual>
+            <origin rpy="0 0 0" xyz="0 0 0"/>
+            <geometry>
+                <mesh filename="package://bumperbot_description/meshes/caster_rear_link.STL"/>
+            </geometry>
+        </visual>
+        <!-- 球形碰撞体 -->
+        <collision>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry>
+                <sphere radius="0.005"/>
+            </geometry>
+        </collision>
+    </link>
 
-<!-- Rear caster -->
-<link name="caster_rear_link">
-    <visual>
-        <origin rpy="0 0 0" xyz="0 0 0"/>
-        <geometry>
-            <mesh filename="package://bumperbot_description/meshes/caster_rear_link.STL"/>
-        </geometry>
-    </visual>
-</link>
-
-<joint name="caster_rear_joint" type="fixed">
-    <parent link="base_link"/>
-    <child link="caster_rear_link"/>
-    <origin rpy="0 0 0" xyz="-0.04755 0 -0.0275"/>
-</joint>
-
+    <!-- 后支撑轮固定关节 -->
+    <joint name="caster_rear_joint" type="fixed">
+        <parent link="base_link"/>
+        <child link="caster_rear_link"/>
+        <origin rpy="0 0 0" xyz="-0.04755 0 -0.0275"/>
+    </joint>
 
 </robot>
