@@ -2,7 +2,7 @@
 基于ROS2的机器移动小车
 
 ## 技术环境
-Ubuntu 22.04, ROS2 Humble, C++
+ROS2 Jazzy、Gazebo Harmonic、C++、Pixi
 
 ## 已实现功能
 1. **通信模块：**
